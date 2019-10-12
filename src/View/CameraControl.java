@@ -7,6 +7,8 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
@@ -18,12 +20,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class CameraControl extends JPanel {
-	private JSlider pan;
-	private JSlider tilt;
-	private JSlider zoom;
-	private JLabel lblPan;
-	private JLabel lblTilt;
-	private JLabel lblZoom;
 	private FormChangeListener formListener;
 
 	public CameraControl(String title) {
@@ -36,44 +32,29 @@ public class CameraControl extends JPanel {
 		Border outsideBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		setBorder(BorderFactory.createCompoundBorder(outsideBorder, insideBorder));
 		
-		Hashtable labelTable = new Hashtable();
-		labelTable.put(new Integer(0), new JLabel("180"));
-		labelTable.put(new Integer(90), new JLabel("90"));
-		labelTable.put(new Integer(180), new JLabel("0"));
-		labelTable.put(new Integer(-90), new JLabel("-90"));
-		labelTable.put(new Integer(-180), new JLabel("-80"));
 		
-		pan = new JSlider(JSlider.HORIZONTAL,-180, 180, 15);
-		pan.setLabelTable(labelTable);
-		tilt = new JSlider(JSlider.VERTICAL,-180, 180, 15);
-		tilt.setLabelTable(labelTable);
-		zoom = new JSlider(JSlider.VERTICAL,0, 20, 15);
-		zoom.setLabelTable(labelTable);
-		lblPan = new JLabel("Pan Rotation (degrees)");
-		lblTilt = new JLabel("Tilt Angle\n(degrees)");
-		lblZoom = new JLabel("Zoom (power)"); 
 		
-		// call the main frame indirectly by event registration.		
-		ChangeListener changeListener = new ChangeListener(){
-					@Override
-					public void stateChanged(ChangeEvent e) {
-						// TODO Auto-generated method stub
-						Object obj = e.getSource();
-						String name = (obj.equals(pan)) ? "pan": ((obj.equals(tilt))? "tilt": "zoom");
-						String setting = String.valueOf(((JSlider) obj).getValue());
-						String command = String.format("Change-%s",name);
-						FormChangeEvent ev = new FormChangeEvent(obj, name, setting, command);
-						
-						if (formListener != null) {
-							formListener.formEventOccurred((FormChangeEvent) ev);
-						}
-					}
-				};
+
+		ArrayList<Integer> values = new ArrayList<Integer>(Arrays.asList(new Integer(0), new Integer(90), new Integer(0),
+				new Integer(-90), new Integer(-180)));
 		
-		pan.addChangeListener(changeListener);
-		tilt.addChangeListener(changeListener);
-		zoom.addChangeListener(changeListener);
+		ArrayList<JLabel> labels = new ArrayList<JLabel>();
+		labels.add(new JLabel("180"));
+		labels.add(new JLabel("90"));
+		labels.add(new JLabel("0"));
+		labels.add(new JLabel("-90"));
+		labels.add(new JLabel("-180"));
 		
+		JSliderPanel panPanel = new JSliderPanel("Pan", "Pan Rotation (degrees)", new JSlider(JSlider.HORIZONTAL,-180, 180, 15));
+		JSliderPanel tiltPanel = new JSliderPanel("Tilt", "Tilt Angle\n(degrees)", new JSlider(JSlider.VERTICAL,-180, 180, 15));
+		JSliderPanel zoomPanel = new JSliderPanel("Zoom", "Zoom (power)", new JSlider(JSlider.VERTICAL,0, 20, 4));
+		try {
+			panPanel.setLables(values, labels);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+			
 		setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
 		Insets no_inset = new Insets(0, 0, 0, 0); 
@@ -85,33 +66,33 @@ public class CameraControl extends JPanel {
 
 		gc.gridx = 1;
 		gc.gridy = 0;
-		add(lblPan, gc);
+		//add(lblPan, gc);
 		gc.gridx = 1;
 		gc.gridy = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
 		gc.insets = new Insets(0, 0, 0, 5);
-		add(pan, gc);
+		add(panPanel, gc);
 		
 		///////////////////// FIRST ROW/4TH COLUMN ///////////////////////
 		gc.gridx = 2;
 		gc.gridy = 0;
-		add(lblTilt, gc);
+		//add(lblTilt, gc);
 		gc.gridx = 2;
 		gc.gridy = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
 		gc.insets = new Insets(0, 0, 0, 5);
-		add(tilt, gc);
+		add(tiltPanel, gc);
 		
 		
 		///////////////////// SECOND ROW/3RD COLUMN ///////////////////////
 		gc.gridx = 3;
 		gc.gridy = 0;
-		add(lblZoom, gc);
+		//add(lblZoom, gc);
 		gc.gridx = 3;
 		gc.gridy = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
 		gc.insets = new Insets(0, 0, 0, 5);
-		add(zoom, gc);
+		add(zoomPanel, gc);
 		
 		
 	}
