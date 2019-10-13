@@ -22,21 +22,22 @@ import javax.swing.event.ChangeListener;
  */
 @SuppressWarnings("serial")
 public class JSliderPanel extends JPanel {
-	private JSlider slider;
-	public JSliderPanel(String title, String label , JSlider slider, FormChangeListener formListener) {
-		this.slider = slider;
+	private String title;
+	public JSliderPanel(String title, int orientation) {
 		Dimension dim = getPreferredSize();
-		dim.width = 500;
+		if (orientation == JSlider.HORIZONTAL) {
+			dim.width = 130;
+			dim.height = 80;
+		} else {
+			dim.width = 80;
+			dim.height = 200;}
+		
 		setPreferredSize(dim);
 		
 		Border insideBorder = BorderFactory.createTitledBorder(title);
 		Border outsideBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		setBorder(BorderFactory.createCompoundBorder(outsideBorder, insideBorder));
-		this.slider.addChangeListener(this.setChangeListener(formListener, title));
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.add(new JLabel(label));
-		this.add(this.slider);
-		
 	}
 	
 	public void setLables(ArrayList <Integer> values, ArrayList<JLabel> labels) throws Exception {
@@ -49,22 +50,9 @@ public class JSliderPanel extends JPanel {
 		}
 	}
 	
-	public ChangeListener setChangeListener(FormChangeListener formListener, String title) {
-		return new ChangeListener(){
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				// TODO Auto-generated method stub
-				Object obj = e.getSource();
-				String name = title;
-				String setting = String.valueOf(((JSlider) obj).getValue());
-				String command = String.format("Change-%s",name);
-				FormChangeEvent ev = new FormChangeEvent(obj, name, setting, command);
-				
-				if (formListener != null) {
-					formListener.formEventOccurred((FormChangeEvent) ev);
-				}
-			}
-		};
+	public String getTitle() {
+		return this.title;
 	}
+	
 	
 }

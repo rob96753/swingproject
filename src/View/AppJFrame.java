@@ -22,7 +22,7 @@ public class AppJFrame extends JFrame {
 	private TextJPanel textPanel;
 	private ActionButtonsPanel actionButtonsPanel;
 	private StatusBarPanel statusBarPanel;
-	private CameraControl cameraControl;
+	private CameraControlPanel cameraControl;
 	private FormPanel formPanel;
 
 	/**
@@ -63,8 +63,8 @@ public class AppJFrame extends JFrame {
 		});
 		
 		
-		CameraControl cameraControl = new CameraControl("Primary Camera Controller");
-		cameraControl.setFormListener(new FormChangeListener() {
+		CameraControlPanel cameraControl = new CameraControlPanel("Primary Camera Controller");
+		FormChangeListener formChangeListener = new FormChangeListener() {
 			@Override
 			public void formEventOccurred(FormChangeEvent ev) {
 				// TODO Auto-generated method stub
@@ -78,11 +78,9 @@ public class AppJFrame extends JFrame {
 
 			@Override
 			public void formEventOccurred(FormEvent ev) {
-				// TODO Auto-generated method stub
-				
+				// TODO Auto-generated method stub				
 			}
-
-		});
+		};
 		
 		
 		add(actionButtonsPanel, BorderLayout.NORTH);
@@ -91,16 +89,23 @@ public class AppJFrame extends JFrame {
 		add(formPanel, BorderLayout.WEST);
 		add(cameraControl, BorderLayout.EAST);
 		
-		
-		
-		formPanel.setFormListener(new FormListener() {
+		FormListener formListener = new FormListener() {
 			public void formEventOccurred(FormEvent ev) {
 				String name = ev.getName();
 				String setting = ev.getSetting();
 				String ageCategory = ev.getAgeCategory();
 				textPanel.appendText(name + ": " + setting + " " + ageCategory + "\n");
 			}
-		});
+		};
+		
+		formPanel.setFormListener(formListener);
+		cameraControl.setFormListener(formChangeListener);
+		/*
+		 * formPanel.setFormListener(new FormListener() { public void
+		 * formEventOccurred(FormEvent ev) { String name = ev.getName(); String setting
+		 * = ev.getSetting(); String ageCategory = ev.getAgeCategory();
+		 * textPanel.appendText(name + ": " + setting + " " + ageCategory + "\n"); } });
+		 */
 		
 		// what action is taken when the "x" is clicked on the window frame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
