@@ -7,10 +7,15 @@ import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.border.BevelBorder;
 
 /**
@@ -31,8 +36,38 @@ public class ActionButtonsPanel extends JPanel implements ActionListener{
 	public ActionButtonsPanel() {
 		// TODO Auto-generated constructor stub
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		loginButton = new JButton("&Login");
-		statusButton = new JButton("&Get Status");
+		loginButton = new JButton("Login");
+		statusButton = new JButton("Get Status");
+		
+		Action loginButtonAction = new AbstractAction("Login") {
+		    @Override
+		    public void actionPerformed(ActionEvent evt) {
+		        System.out.println("Logging In...");
+		    }
+		};
+		
+		Action statusButtonAction = new AbstractAction("Status") {
+		    @Override
+		    public void actionPerformed(ActionEvent evt) {
+		        System.out.println("Status...");
+		    }
+		};
+		
+		loginButton.setAction(loginButtonAction);		 
+		loginButtonAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_L);
+		 
+		loginButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+		        KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "Login");
+		 
+		loginButton.getActionMap().put("Login", loginButtonAction);
+		
+		statusButton.setAction(statusButtonAction);		 
+		statusButtonAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
+		 
+		statusButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+		        KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "status");
+		 
+		statusButton.getActionMap().put("status", statusButtonAction);
 		
 		loginButton.addActionListener(this);
 		statusButton.addActionListener(this);

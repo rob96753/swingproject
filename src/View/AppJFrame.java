@@ -5,6 +5,7 @@ package View;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -49,6 +50,7 @@ public class AppJFrame extends JFrame {
 		// TODO Auto-generated constructor stub
 		setLayout(new BorderLayout());
 		setSize(1000, 400);
+		setMinimumSize(new Dimension(1000, 400));
 		textPanel = new TextJPanel();
 		actionButtonsPanel = new ActionButtonsPanel();
 		statusBarPanel = new StatusBarPanel();
@@ -109,6 +111,7 @@ public class AppJFrame extends JFrame {
 		
 		// what action is taken when the "x" is clicked on the window frame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pack();
 		setVisible(true);
 	}
 

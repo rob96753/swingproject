@@ -100,8 +100,8 @@ public class CameraControlPanel extends JPanel {
 		tiltPanel.add(lblTilt);
 		tiltPanel.add(tilt, 20, 10);
 		
-		zoomPanel.add(zoom, 20, 10);
 		zoomPanel.add(lblZoom);
+		zoomPanel.add(zoom, 20, 10);
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
@@ -110,30 +110,29 @@ public class CameraControlPanel extends JPanel {
 		///////////////////// FIRST ROW/3rd Column ///////////////////////
 		gc.weightx = 8; // how much area the cell takes up
 		gc.weighty = 1;
-		gc.fill = GridBagConstraints.BOTH;
+//		gc.gridwidth = 5;
+//		gc.gridheight = 5;
+		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx = 0;
 		gc.gridy = 0;
-		gc.anchor = GridBagConstraints.LINE_START;
-		gc.insets = new Insets(0, 0, 0, 5);
+		gc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gc.insets = new Insets(3, 3, 3, 3);
 		add(panPanel, gc);
 		
-		gc.weightx = 2; // how much area the cell takes up
-		gc.weighty = 4;
+		gc.weightx = 1; // how much area the cell takes up
+		gc.weighty = 8;
+		gc.fill = GridBagConstraints.VERTICAL;
 		gc.gridx = 0;
 		gc.gridy = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
-		gc.insets = new Insets(0, 0, 0, 5);
 		add(tiltPanel, gc);
 		
-		gc.weightx = 2; // how much area the cell takes up
-		gc.weighty = 4;
+		gc.weightx = 1; // how much area the cell takes up
+		gc.weighty = 8;
 		gc.gridx = 1;
 		gc.gridy = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
-		gc.insets = new Insets(0, 0, 0, 5);
 		add(zoomPanel, gc);
-		
-		
 	}
 
 	public CameraControlPanel(LayoutManager layout) {

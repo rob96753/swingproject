@@ -52,8 +52,9 @@ public class JSliderPanel extends JPanel {
 	}
 	
 	public Component add(JSlider comp, int majorTickSpacing, int minorTickSpacing) {
-		((JSlider) comp).setMajorTickSpacing(minorTickSpacing);
-		((JSlider) comp).setMinorTickSpacing(1);
+		((JSlider) comp).setAlignmentX(Component.CENTER_ALIGNMENT);
+		((JSlider) comp).setMajorTickSpacing(majorTickSpacing);
+		((JSlider) comp).setMinorTickSpacing(minorTickSpacing);
 		((JSlider) comp).setPaintTicks(true);
 		((JSlider) comp).setPaintLabels(true);
 		super.add(comp);
