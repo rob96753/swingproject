@@ -4,16 +4,18 @@
 package View;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EventObject;
+import java.awt.event.KeyEvent;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 /**
  * @author somme
@@ -63,6 +65,8 @@ public class AppJFrame extends JFrame {
 				statusBarPanel.appendText(text, StatusBarPanel.POSITION.CENTER);
 			}			
 		});
+		
+		setJMenuBar(this.createMenuBar());
 		
 		
 		CameraControlPanel cameraControl = new CameraControlPanel("Primary Camera Controller");
@@ -122,6 +126,35 @@ public class AppJFrame extends JFrame {
 	public AppJFrame(String title, GraphicsConfiguration gc) {
 		super(title, gc);
 		// TODO Auto-generated constructor stub
+	}
+	
+	private JMenuBar createMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		JMenu windowMenu = new JMenu("Window");
+		
+		
+		// By declaring this as a final variable, it can be referenced inside the action  listener.
+		final JMenuItem exitItem = new JMenuItem("Exit");
+		exitItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				System.exit(0);
+			}
+			
+		});
+		fileMenu.add(exitItem);
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		exitItem.setMnemonic(KeyEvent.VK_X);
+		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+		
+		
+		menuBar.add(fileMenu);
+		menuBar.add(windowMenu);
+		
+		return menuBar;
 	}
 
 }

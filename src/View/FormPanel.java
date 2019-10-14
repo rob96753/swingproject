@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -56,7 +57,7 @@ public class FormPanel extends JPanel {
 		nameField = new JTextField(10);
 		occupationField = new JTextField(10);
 		okBtn = new JButton("OK");
-		
+		okBtn.setMnemonic(KeyEvent.VK_K);
 		// call the main frame indirectly by event registration.
 		okBtn.addActionListener(new ActionListener(){
 			@Override
@@ -73,6 +74,8 @@ public class FormPanel extends JPanel {
 				}
 			}
 		});
+		
+		
 		
 		ageCategories = new JList();
 		DefaultListModel<AgeCategory> ageModel = new DefaultListModel<AgeCategory>();
