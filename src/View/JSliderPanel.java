@@ -3,6 +3,7 @@
  */
 package View;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -48,6 +49,15 @@ public class JSliderPanel extends JPanel {
 		for (int i= 0; i < values.size(); i++) {
 			hashTable.put(values.get(i), labels.get(i));
 		}
+	}
+	
+	public Component add(JSlider comp, int majorTickSpacing, int minorTickSpacing) {
+		((JSlider) comp).setMajorTickSpacing(minorTickSpacing);
+		((JSlider) comp).setMinorTickSpacing(1);
+		((JSlider) comp).setPaintTicks(true);
+		((JSlider) comp).setPaintLabels(true);
+		super.add(comp);
+		return comp;
 	}
 	
 	public String getTitle() {

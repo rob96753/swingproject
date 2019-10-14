@@ -42,19 +42,31 @@ public class CameraControlPanel extends JPanel {
 		Border outsideBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		setBorder(BorderFactory.createCompoundBorder(outsideBorder, insideBorder));
 		
-		Hashtable labelTable = new Hashtable();
-		labelTable.put(new Integer(0), new JLabel("180"));
-		labelTable.put(new Integer(90), new JLabel("90"));
-		labelTable.put(new Integer(180), new JLabel("0"));
-		labelTable.put(new Integer(-90), new JLabel("-90"));
-		labelTable.put(new Integer(-180), new JLabel("-80"));
-
-		pan = new JSlider(JSlider.HORIZONTAL,-180, 180, 15);
-		pan.setLabelTable(labelTable);
-		tilt = new JSlider(JSlider.VERTICAL,-180, 180, 15);
-		tilt.setLabelTable(labelTable);
-		zoom = new JSlider(JSlider.VERTICAL,0, 20, 15);
-		zoom.setLabelTable(labelTable);
+		Hashtable <Integer, JLabel>panLabelTable = new <Integer, JLabel>Hashtable();
+		panLabelTable.put(0, new JLabel("-180°"));
+		panLabelTable.put(90, new JLabel(" -90°"));
+		panLabelTable.put(180, new JLabel("   0°"));
+		panLabelTable.put(270, new JLabel("  90°"));
+		panLabelTable.put(360, new JLabel(" 180°"));
+		pan = new JSlider(JSlider.HORIZONTAL,0, 360, 180);
+		pan.setLabelTable(panLabelTable);
+		tilt = new JSlider(JSlider.VERTICAL, 0, 180, 90);
+		Hashtable <Integer, JLabel>tiltLabelTable = new <Integer, JLabel>Hashtable();
+		tiltLabelTable.put(0, new JLabel("-90\u00B0"));
+		tiltLabelTable.put(45, new JLabel("-45\u00B0"));
+		tiltLabelTable.put(90, new JLabel("  0\u00B0"));
+		tiltLabelTable.put(135, new JLabel(" 45\u00B0"));
+		tiltLabelTable.put(180, new JLabel(" 90\u00B0"));
+		tilt.setLabelTable(tiltLabelTable);
+		//labelTable.clear();
+		Hashtable <Integer, JLabel>zoomLabelTable = new <Integer, JLabel>Hashtable();
+		zoomLabelTable.put(0, new JLabel(" 0x"));
+		zoomLabelTable.put(5, new JLabel(" 5x"));
+		zoomLabelTable.put(10, new JLabel("10x"));
+		zoomLabelTable.put(15, new JLabel("15x"));
+		zoomLabelTable.put(20, new JLabel("20x"));
+		zoom = new JSlider(JSlider.VERTICAL,0, 20, 0);
+		zoom.setLabelTable(zoomLabelTable);
 		lblPan = new JLabel("Pan Rotation (degrees)");
 		lblTilt = new JLabel("Tilt Angle\n(degrees)");
 		lblZoom = new JLabel("Zoom (power)"); 
@@ -83,13 +95,13 @@ public class CameraControlPanel extends JPanel {
 		JSliderPanel tiltPanel = new JSliderPanel("Camera Tilt", JSlider.VERTICAL);
 		JSliderPanel zoomPanel = new JSliderPanel("Camera Zoom", JSlider.VERTICAL);
 		panPanel.add(lblPan);
-		panPanel.add(pan);
+		panPanel.add(pan, 20, 10);
 		
 		tiltPanel.add(lblTilt);
-		tiltPanel.add(tilt);
+		tiltPanel.add(tilt, 20, 10);
 		
+		zoomPanel.add(zoom, 20, 10);
 		zoomPanel.add(lblZoom);
-		zoomPanel.add(zoom);
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
