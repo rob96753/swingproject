@@ -2,20 +2,27 @@ package View;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
@@ -30,6 +37,13 @@ public class CameraControlPanel extends JPanel {
 	private JLabel lblTilt;
 	private JLabel lblZoom;
 	private FormChangeListener formListener;
+	private JRadioButton rdoInfraRed;
+	private JRadioButton rdoNaturalLight;
+	private JRadioButton rdoNightVision;
+	private ButtonGroup lightingGroup;
+	
+	private JCheckBox chkAudioOn;
+	private JLabel lblAudioOn;
 
 
 	public CameraControlPanel(String title) {
@@ -80,7 +94,9 @@ public class CameraControlPanel extends JPanel {
 						String name = (obj.equals(pan)) ? "pan": ((obj.equals(tilt))? "tilt": "zoom");
 						String setting = String.valueOf(((JSlider) obj).getValue());
 						String command = String.format("Change-%s",name);
-						FormChangeEvent ev = new FormChangeEvent(obj, name, setting, command);
+						String lightingMode = lightingGroup.getSelection().getActionCommand();
+						FormChangeEvent ev = new FormChangeEvent(obj, name, setting, command, lightingMode);
+						
 
 						if (formListener != null) {
 							formListener.formEventOccurred((FormChangeEvent) ev);
@@ -106,12 +122,51 @@ public class CameraControlPanel extends JPanel {
 		setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
 		Insets no_inset = new Insets(0, 0, 0, 0); 
+		
+		// radio buttons
+		rdoInfraRed = new JRadioButton("Infra-Red");
+		rdoInfraRed.setActionCommand("INFRARED");
+		rdoNaturalLight = new JRadioButton("Natural");
+		rdoNaturalLight.setActionCommand("NATURAL");
+		rdoNightVision = new JRadioButton("Night Vision");
+		rdoNightVision.setActionCommand("NIGHT_VISION");
+		lightingGroup = new ButtonGroup();
+
+		lightingGroup.add(rdoNaturalLight);
+		lightingGroup.add(rdoInfraRed);
+		lightingGroup.add(rdoNightVision);
+		
+		rdoNaturalLight.setSelected(true);
+		
+		JRadioPanel pnlLighting = new JRadioPanel("Lighting");
+		
+		pnlLighting.add(rdoNaturalLight);
+		pnlLighting.add(rdoInfraRed);
+		pnlLighting.add(rdoNightVision);
+		
+		chkAudioOn = new JCheckBox("Audio");
+		chkAudioOn.setSelected(false); // this should actually get the status from the camera
+		lblAudioOn = new JLabel("OFF");
+		chkAudioOn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ev) {
+			}
+		});
+		
+		chkAudioOn.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent ie) {
+				// TODO Auto-generated method stub
+				lblAudioOn.setText(String.format("%s", (ie.getStateChange() == ItemEvent.SELECTED)?"ON":"OFF"));
+			}
+			
+		});
 
 		///////////////////// FIRST ROW/3rd Column ///////////////////////
-		gc.weightx = 8; // how much area the cell takes up
-		gc.weighty = 1;
-//		gc.gridwidth = 5;
-//		gc.gridheight = 5;
+		gc.weightx = 1; // how much area the cell takes up
+		gc.weighty = .2;
+		gc.gridwidth = 3;
+		gc.gridheight = 1;
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx = 0;
 		gc.gridy = 0;
@@ -119,20 +174,50 @@ public class CameraControlPanel extends JPanel {
 		gc.insets = new Insets(3, 3, 3, 3);
 		add(panPanel, gc);
 		
-		gc.weightx = 1; // how much area the cell takes up
-		gc.weighty = 8;
+		gc.weightx = .2; // how much area the cell takes up
+		gc.weighty = 1;
+		gc.gridwidth = 1;
+		gc.gridheight = 3;
 		gc.fill = GridBagConstraints.VERTICAL;
 		gc.gridx = 0;
 		gc.gridy = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(tiltPanel, gc);
 		
-		gc.weightx = 1; // how much area the cell takes up
-		gc.weighty = 8;
+		gc.weightx = .2; // how much area the cell takes up
+		gc.weighty = 1;
+		gc.gridwidth = 1;
+		gc.gridheight = 3;
 		gc.gridx = 1;
 		gc.gridy = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(zoomPanel, gc);
+		
+		gc.weightx = .2; // how much area the cell takes up
+		gc.weighty = 1;
+		gc.gridwidth = 1;
+		gc.gridheight = 1;
+		gc.gridx = 2;
+		gc.gridy = 1;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(pnlLighting, gc);
+		
+		JPanel audioControlPanel = new JPanel();
+		audioControlPanel.setLayout(new FlowLayout());
+		audioControlPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		audioControlPanel.add(chkAudioOn);
+		audioControlPanel.add(lblAudioOn);
+		
+		
+		gc.weightx = .2; // how much area the cell takes up
+		gc.weighty = 1;
+		gc.gridwidth = 1;
+		gc.gridheight = 1;
+		gc.gridx = 2;
+		gc.gridy = 2;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(audioControlPanel, gc);
+		
 	}
 
 	public CameraControlPanel(LayoutManager layout) {

@@ -14,6 +14,7 @@ public class FormChangeEvent extends EventObject {
 	private String name;
 	private String setting;
 	private String command;
+	private String lightingMode;
 	
 	/**
 	 * @param source
@@ -23,11 +24,12 @@ public class FormChangeEvent extends EventObject {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public FormChangeEvent(Object eventSource, String name, String setting, String command) {
+	public FormChangeEvent(Object eventSource, String name, String setting, String command, String lightingMode) {
 		super(eventSource);
 		this.name = name;
 		this.setting = setting;
 		this.command = command;
+		this.lightingMode = lightingMode;
 	}
 
 	public String getName() {
@@ -52,6 +54,14 @@ public class FormChangeEvent extends EventObject {
 
 	public void setCommand(String command) {
 		this.command = command;
+	}
+
+	public String getLightingMode() {
+		return lightingMode;
+	}
+
+	public void setLightingMode(String lightingMode) {
+		this.lightingMode = lightingMode;
 	}
 
 }

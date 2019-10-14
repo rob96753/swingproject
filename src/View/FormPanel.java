@@ -10,14 +10,19 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultButtonModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
@@ -33,6 +38,8 @@ public class FormPanel extends JPanel {
 	private JButton okBtn;
 	private FormListener formListener;
 	private JList ageCategories;
+	private JCheckBox chkAudioOn;
+	private JLabel lblAudioOn;
 
 	/**
 	 * 
@@ -60,6 +67,7 @@ public class FormPanel extends JPanel {
 				// getting the string that's displayed 
 				FormEvent formEvent = new FormEvent(this, name, occupation, ageCategory.getCategory());
 				
+				
 				if (formListener != null) {
 					formListener.formEventOccurred(formEvent);
 				}
@@ -76,6 +84,25 @@ public class FormPanel extends JPanel {
 		ageCategories.setModel(ageModel);
 		ageCategories.setSelectedIndex(0);
 		
+		chkAudioOn = new JCheckBox("Audio");
+		chkAudioOn.setSelected(false); // this should actually get the status from the camera
+		lblAudioOn = new JLabel("OFF");
+		chkAudioOn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ev) {
+			}
+		});
+		
+		chkAudioOn.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent ie) {
+				// TODO Auto-generated method stub
+				lblAudioOn.setText(String.format("%s", (ie.getStateChange() == ItemEvent.SELECTED)?"ON":"OFF"));
+			}
+			
+		});
+		
+		
 		Border insideBorder = BorderFactory.createTitledBorder("Add Person");
 		Border outsideBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		setBorder(BorderFactory.createCompoundBorder(outsideBorder, insideBorder));
@@ -84,18 +111,19 @@ public class FormPanel extends JPanel {
 		GridBagConstraints gc = new GridBagConstraints();
 		Insets no_inset = new Insets(0, 0, 0, 0); 
 		
+		int row = 0;
 		///////////////////// FIRST ROW ///////////////////////
 		gc.weightx = 1; // how much area the cell takes up
 		gc.weighty = 0.1;
 		gc.gridx = 0;
-		gc.gridy = 0;
+		gc.gridy = row;
 		gc.fill = GridBagConstraints.NONE;
 		gc.anchor = GridBagConstraints.LINE_END;
 		gc.insets = new Insets(0, 0, 0, 5);
 		add(nameLabel, gc);
 				
 		gc.gridx = 1;
-		gc.gridy = 0;
+		gc.gridy = row++;
 		gc.anchor = GridBagConstraints.LINE_START;
 		gc.insets = no_inset;
 		add(nameField);
@@ -104,13 +132,13 @@ public class FormPanel extends JPanel {
 		gc.weightx = 1; // how much area the cell takes up
 		gc.weighty = 0.1;
 		gc.gridx = 0;
-		gc.gridy = 1;
+		gc.gridy = row;
 		gc.anchor = GridBagConstraints.LINE_END;
 		gc.insets = new Insets(0, 0, 0, 5);
 		add(occupationLabel, gc);
 		
 		gc.gridx = 1;
-		gc.gridy = 1;
+		gc.gridy = row++;
 		gc.anchor = GridBagConstraints.LINE_START;
 		gc.insets = no_inset;
 		add(occupationField, gc);
@@ -119,16 +147,36 @@ public class FormPanel extends JPanel {
 		gc.weightx = 1; // how much area the cell takes up
 		gc.weighty = 0.2;	
 		gc.gridx = 1;
-		gc.gridy = 2;
+		gc.gridy = row++;
 		gc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gc.insets = no_inset;
 		add(ageCategories, gc);
 		
+		
+		
 		//////////////////////FORTH ROW ////////////////////////
+		gc.weightx = 1; // how much area the cell takes up
+		gc.weighty = 0.2;	
+		gc.gridx = 0;
+		gc.gridy = row;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = no_inset;
+		add(chkAudioOn, gc);
+		
+		gc.weightx = 1; // how much area the cell takes up
+		gc.weighty = 0.2;	
+		gc.gridx = 1;
+		gc.gridy = row++;
+		gc.anchor = GridBagConstraints.LINE_START;
+		gc.insets = no_inset;
+		add(lblAudioOn, gc);
+		
+		
+		//////////////////////FIFTH ROW ////////////////////////
 		gc.weightx = 1; // how much area the cell takes up
 		gc.weighty = 3.0;	
 		gc.gridx = 1;
-		gc.gridy = 3;
+		gc.gridy = row++;
 		gc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gc.insets = no_inset;
 		add(okBtn, gc);

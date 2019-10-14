@@ -74,8 +74,8 @@ public class AppJFrame extends JFrame {
 				String name = ev.getName();
 				String setting = ev.getSetting();
 				String command = ev.getCommand();
-				textPanel.appendText(name + ": " + setting + ": " + command + "\n");
-				
+				String lighting = ev.getLightingMode();
+				textPanel.appendText(name + ": " + setting + ": " + command + ":" + lighting + "\n");
 			}
 
 			@Override
